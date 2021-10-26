@@ -10,7 +10,7 @@ namespace series.classes
         private string Titulo {get; set;}
         private string Descricao {get; set;}
         private int Ano {get; set;}
-        private bool Excluido {get; set;}
+        public bool Excluido {get; set;}
 
             // MÉTODOS ---------------- 
 
@@ -31,6 +31,11 @@ namespace series.classes
             retorno += "Título: " + this.Titulo + Environment.NewLine;
             retorno += "Descrição: " + this.Descricao + Environment.NewLine;
             retorno += "Ano de Estreia: " + this.Ano + Environment.NewLine;
+
+            if(this.Excluido == true)
+            {
+                return retorno = "Anime Excluido"; 
+            }
 
             return retorno;
         }

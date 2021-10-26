@@ -20,6 +20,15 @@ namespace series
                     case "2":
                         InserirAnime();
                         break;
+                    case "3":
+                        AtualizarAnime();
+                        break;
+                    case "4":
+                        ExcluirAnime();
+                        break;
+                    case "5":
+                        VisualizarAnime();
+                        break;
                     case "C":
                         Console.Clear();
                         break;
@@ -27,8 +36,9 @@ namespace series
                         throw new ArgumentOutOfRangeException();
 
                 }
+                opcaoUsuario = ObterOpcao();
             }
-            Console.WriteLine("Obrigado por utilizar noss(o serviço");
+            Console.WriteLine("Obrigado por utilizar nosso serviço");
             Console.ReadLine();
         }
 
@@ -45,7 +55,10 @@ namespace series
 
             foreach (var anime in lista)
             {
-                Console.WriteLine("#ID {0}: - {1}", anime.retornaId(), anime.retornaTitulo());
+                if (anime.Excluido != true)
+                {
+                    Console.WriteLine("#ID {0}: - {1}", anime.retornaId(), anime.retornaTitulo());
+                }
             }
         }
 
@@ -73,7 +86,76 @@ namespace series
                                         descricao: entradaDescricao,
                                         ano: entradaAno);
             repositorio.Insere(novoAnime);
-            string opcaoUsuario = ObterOpcao();
+
+        }
+
+        private static void AtualizarAnime()
+        {
+            Console.WriteLine("Digite o ID do Anime: ");
+            int indiceAnime = int.Parse(Console.ReadLine());
+
+            foreach (int i in Enum.GetValues(typeof(Genero)))
+            {
+                Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
+            }
+             Console.WriteLine("Digite o genêro entre as opções acima: ");
+            int entradaGenero = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite o Título do Anime");
+            string entradaTitulo = Console.ReadLine();
+
+            Console.WriteLine("Digite o Ano de inicio do Anime");
+            int entradaAno = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a descrição do anime");
+            string entradaDescricao = Console.ReadLine();
+
+            Anime atualizaAnime = new Anime(id: indiceAnime,
+                                        genero: (Genero)entradaGenero,
+                                        titulo: entradaTitulo,
+                                        descricao: entradaDescricao,
+                                        ano: entradaAno);
+
+            repositorio.Atualiza(indiceAnime,atualizaAnime);
+        }
+
+        private static void ExcluirAnime()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Digite o id do Anime: ");
+            int indiceAnime = int.Parse(Console.ReadLine());
+
+            Console.WriteLine();
+            Console.WriteLine("Tem certeza que deseja EXCLUIR esse Anime: digite Y | N ");
+            string resposta = Console.ReadLine();
+
+            if(resposta.ToUpper() == "Y" )
+            {
+                repositorio.Exclui(indiceAnime);
+                Console.WriteLine();
+                Console.WriteLine("------------- ANIME EXCLUIDO ---------------");
+                Console.WriteLine();
+            }
+        }
+
+        private static void VisualizarAnime()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Digite o id do Anime: ");
+            int indiceAnime = int.Parse(Console.ReadLine());
+
+            var Exibir = repositorio.RetornaPorId(indiceAnime);
+
+            if(Exibir.Excluido == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Anime Excluido");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine(Exibir);
+            }   
         }
 
         private static string ObterOpcao()

@@ -35,7 +35,7 @@ namespace series
 
         public Anime RetornaPorId(int id)
         {
-            return listaAnimes[id];
+                return listaAnimes[id];
         }
     }
 }
